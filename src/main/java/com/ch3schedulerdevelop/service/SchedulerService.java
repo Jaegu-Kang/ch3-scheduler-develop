@@ -55,4 +55,19 @@ public class SchedulerService {
         }
         return dtos;
     }
+
+    @Transactional(readOnly = true)
+    public GetAllSchedulerResponse getOneScheduler(Long userId){
+        Scheduler scheduler = schedulerRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 일정입니다.")
+        );
+        return new GetAllSchedulerResponse(
+                scheduler.getId(),
+                scheduler.getName(),
+                scheduler.getTitle(),
+                scheduler.getContent(),
+                scheduler.getCreatedAt(),
+                scheduler.getModifiedAt()
+        );
+    }
 }

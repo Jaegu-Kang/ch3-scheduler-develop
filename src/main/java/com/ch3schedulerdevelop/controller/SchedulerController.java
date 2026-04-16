@@ -29,4 +29,10 @@ public class SchedulerController {
         List<GetAllSchedulerResponse> result = schedulerService.getAllSchedulerResponse();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<GetAllSchedulerResponse> getOneScheduler(@PathVariable Long userId){
+        GetAllSchedulerResponse result = schedulerService.getOneScheduler(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 }
