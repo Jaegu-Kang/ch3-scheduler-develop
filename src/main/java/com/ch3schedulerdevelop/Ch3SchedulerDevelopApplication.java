@@ -1,13 +1,13 @@
-package com.ch4schedulerdevelop;
+package com.ch3schedulerdevelop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Ch4SchedulerDevelopApplication {
+public class Ch3SchedulerDevelopApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Ch4SchedulerDevelopApplication.class, args);
+        SpringApplication.run(Ch3SchedulerDevelopApplication.class, args);
     }
 
 }
