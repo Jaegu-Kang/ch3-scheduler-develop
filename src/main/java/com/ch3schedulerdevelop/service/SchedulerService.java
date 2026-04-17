@@ -1,8 +1,6 @@
 package com.ch3schedulerdevelop.service;
 
-import com.ch3schedulerdevelop.dto.CreateSchedulerRequest;
-import com.ch3schedulerdevelop.dto.CreateSchedulerResponse;
-import com.ch3schedulerdevelop.dto.GetAllSchedulerResponse;
+import com.ch3schedulerdevelop.dto.*;
 import com.ch3schedulerdevelop.entity.Scheduler;
 import com.ch3schedulerdevelop.repository.SchedulerRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +60,32 @@ public class SchedulerService {
                 () -> new IllegalStateException("존재하지 않는 일정입니다.")
         );
         return new GetAllSchedulerResponse(
+                scheduler.getId(),
+                scheduler.getName(),
+                scheduler.getTitle(),
+                scheduler.getContent(),
+                scheduler.getCreatedAt(),
+                scheduler.getModifiedAt()
+        );
+    }
+
+    @Transactional
+    public UpdateSchedulerResponse updateSchedulerResponse(Long userId, UpdateSchedulerRequest request){
+        Scheduler scheduler = schedulerRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 일정입니다.")
+        );
+
+        if (!scheduler.getPassword().equals(request.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        scheduler.update(
+                request.getName(),
+                request.getTitle(),
+                request.getContent()
+        );
+
+        return new UpdateSchedulerResponse(
                 scheduler.getId(),
                 scheduler.getName(),
                 scheduler.getTitle(),

@@ -1,8 +1,6 @@
 package com.ch3schedulerdevelop.controller;
 
-import com.ch3schedulerdevelop.dto.CreateSchedulerRequest;
-import com.ch3schedulerdevelop.dto.CreateSchedulerResponse;
-import com.ch3schedulerdevelop.dto.GetAllSchedulerResponse;
+import com.ch3schedulerdevelop.dto.*;
 import com.ch3schedulerdevelop.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +31,12 @@ public class SchedulerController {
     @GetMapping("/{userId}")
     public ResponseEntity<GetAllSchedulerResponse> getOneScheduler(@PathVariable Long userId){
         GetAllSchedulerResponse result = schedulerService.getOneScheduler(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UpdateSchedulerResponse> updateScheduler(@PathVariable Long userId, @RequestBody UpdateSchedulerRequest request){
+        UpdateSchedulerResponse result = schedulerService.updateSchedulerResponse(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
