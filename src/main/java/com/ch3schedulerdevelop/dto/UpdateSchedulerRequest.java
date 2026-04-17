@@ -8,5 +8,4 @@ public class UpdateSchedulerRequest {
     private String name;
     private String title;
     private String content;
-    private String password;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/schedulers")
+@RequestMapping("api/schedulers")
 public class SchedulerController {
 
     private final SchedulerService schedulerService;
@@ -41,8 +41,8 @@ public class SchedulerController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteScheduler(@PathVariable Long userId, @RequestBody DeleteSchedulerRequest request){
-        schedulerService.deleteScheduler(userId, request);
+    public ResponseEntity<Void> deleteScheduler(@PathVariable Long userId){
+        schedulerService.deleteScheduler(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
