@@ -94,4 +94,15 @@ public class SchedulerService {
                 scheduler.getModifiedAt()
         );
     }
+
+    @Transactional
+    public void deleteScheduler(Long userId, DeleteSchedulerRequest request){
+        Scheduler scheduler = schedulerRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("없는 일정입니다.")
+        );
+        if (!scheduler.getPassword().equals(request.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        schedulerRepository.delete(scheduler);
+    }
 }
