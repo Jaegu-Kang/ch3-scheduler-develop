@@ -34,7 +34,7 @@ public class SchedulerController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @PutMapping("/{userId}")
+    @PatchMapping("/{userId}")
     public ResponseEntity<UpdateSchedulerResponse> updateScheduler(@PathVariable Long userId, @RequestBody UpdateSchedulerRequest request){
         UpdateSchedulerResponse result = schedulerService.updateSchedulerResponse(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
