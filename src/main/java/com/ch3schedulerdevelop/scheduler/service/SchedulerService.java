@@ -4,6 +4,8 @@ import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
 import com.ch3schedulerdevelop.scheduler.repository.SchedulerRepository;
 import com.ch3schedulerdevelop.scheduler.dto.*;
+import com.ch3schedulerdevelop.user.entity.User;
+import com.ch3schedulerdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +18,17 @@ import java.util.List;
 public class SchedulerService {
 
     private final SchedulerRepository schedulerRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public CreateSchedulerResponse saveScheduler(CreateSchedulerRequest request){
+        User user = userRepository.findById(request.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("없는 유저입니다.")
+        );
         Scheduler scheduler = new Scheduler(
-                request.getName(),
                 request.getTitle(),
-                request.getContent()
+                request.getContent(),
+                user
         );
         Scheduler savedScheduler = schedulerRepository.save(scheduler);
         return CreateSchedulerResponse.from(savedScheduler);
@@ -52,7 +58,6 @@ public class SchedulerService {
                 () -> new IllegalStateException("존재하지 않는 일정입니다.")
         );
         scheduler.update(
-                request.getName(),
                 request.getTitle(),
                 request.getContent()
         );
