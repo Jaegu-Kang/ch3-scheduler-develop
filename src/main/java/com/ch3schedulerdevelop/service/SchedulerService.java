@@ -28,16 +28,12 @@ public class SchedulerService {
     }
 
     @Transactional(readOnly = true)
-    public List<GetAllSchedulerResponse> getAllSchedulerResponse(){
+    public List<GetAllSchedulerResponse> getAllSchedulerResponse() {
         List<Scheduler> schedulers = schedulerRepository.findAll();
-        List<GetAllSchedulerResponse> dtos = new ArrayList<>();
 
-        for (Scheduler scheduler : schedulers){
-            GetAllSchedulerResponse dto = GetAllSchedulerResponse.from(scheduler);
-
-            dtos.add(dto);
-        }
-        return dtos;
+        return schedulers.stream()
+                .map(GetAllSchedulerResponse::from)
+                .toList();
     }
 
     @Transactional(readOnly = true)
