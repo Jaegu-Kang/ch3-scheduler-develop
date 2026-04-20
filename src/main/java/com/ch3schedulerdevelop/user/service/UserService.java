@@ -1,8 +1,6 @@
 package com.ch3schedulerdevelop.user.service;
 
-import com.ch3schedulerdevelop.user.dto.CreateUserRequest;
-import com.ch3schedulerdevelop.user.dto.CreateUserResponse;
-import com.ch3schedulerdevelop.user.dto.GetAllUserResponse;
+import com.ch3schedulerdevelop.user.dto.*;
 import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +40,17 @@ public class UserService {
                 () -> new IllegalStateException("존재하지 않는 유저입니다.")
         );
         return GetAllUserResponse.from(user);
+    }
+
+    @Transactional
+    public UpdateUserResponse updateUser(Long userId, UpdateUserRequest request){
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 유저입니다.")
+        );
+        user.update(
+                request.getName(),
+                request.getEmail()
+        );
+        return UpdateUserResponse.from(user);
     }
 }
