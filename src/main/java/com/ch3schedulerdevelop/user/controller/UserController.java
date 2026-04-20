@@ -26,7 +26,13 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<GetAllUserResponse>> getAllUser(){
-        List<GetAllUserResponse> result = userService.getAllUserResponse();
+        List<GetAllUserResponse> result = userService.getAllUser();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<GetAllUserResponse> getOneUser(@PathVariable Long userId){
+        GetAllUserResponse result = userService.getOneUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

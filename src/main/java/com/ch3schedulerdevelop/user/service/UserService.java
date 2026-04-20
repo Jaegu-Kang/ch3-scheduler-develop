@@ -28,11 +28,19 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<GetAllUserResponse> getAllUserResponse(){
+    public List<GetAllUserResponse> getAllUser(){
         List<User> users = userRepository.findAll();
 
         return users.stream()
                 .map(GetAllUserResponse::from)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public GetAllUserResponse getOneUser(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 유저입니다.")
+        );
+        return GetAllUserResponse.from(user);
     }
 }
