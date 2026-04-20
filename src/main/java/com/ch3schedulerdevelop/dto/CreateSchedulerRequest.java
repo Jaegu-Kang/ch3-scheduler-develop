@@ -8,5 +8,4 @@ public class CreateSchedulerRequest {
     private String name;
     private String title;
     private String content;
-    private String password;
 }

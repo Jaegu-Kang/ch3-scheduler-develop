@@ -1,10 +1,13 @@
 package com.ch3schedulerdevelop.dto;
 
+import com.ch3schedulerdevelop.entity.Scheduler;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@JsonPropertyOrder({"id","name","title","content", "createdAt", "modifiedAt"})
 public class UpdateSchedulerResponse {
 
     private final Long id;
@@ -14,12 +17,23 @@ public class UpdateSchedulerResponse {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
-    public UpdateSchedulerResponse(Long id, String name, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    private UpdateSchedulerResponse(Long id, String name, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+    }
+
+    public static UpdateSchedulerResponse from(Scheduler scheduler){
+        return new UpdateSchedulerResponse(
+                scheduler.getId(),
+                scheduler.getName(),
+                scheduler.getTitle(),
+                scheduler.getContent(),
+                scheduler.getCreatedAt(),
+                scheduler.getModifiedAt()
+        );
     }
 }

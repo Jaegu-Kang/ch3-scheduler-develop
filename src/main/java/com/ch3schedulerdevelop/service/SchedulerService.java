@@ -21,18 +21,10 @@ public class SchedulerService {
         Scheduler scheduler = new Scheduler(
                 request.getName(),
                 request.getTitle(),
-                request.getContent(),
-                request.getPassword()
+                request.getContent()
         );
         Scheduler savedScheduler = schedulerRepository.save(scheduler);
-        return new CreateSchedulerResponse(
-                savedScheduler.getId(),
-                savedScheduler.getName(),
-                savedScheduler.getTitle(),
-                savedScheduler.getContent(),
-                savedScheduler.getCreatedAt(),
-                savedScheduler.getModifiedAt()
-        );
+        return CreateSchedulerResponse.from(savedScheduler);
     }
 
     @Transactional(readOnly = true)
@@ -41,14 +33,8 @@ public class SchedulerService {
         List<GetAllSchedulerResponse> dtos = new ArrayList<>();
 
         for (Scheduler scheduler : schedulers){
-            GetAllSchedulerResponse dto = new GetAllSchedulerResponse(
-                    scheduler.getId(),
-                    scheduler.getName(),
-                    scheduler.getTitle(),
-                    scheduler.getContent(),
-                    scheduler.getCreatedAt(),
-                    scheduler.getModifiedAt()
-            );
+            GetAllSchedulerResponse dto = GetAllSchedulerResponse.from(scheduler);
+
             dtos.add(dto);
         }
         return dtos;
@@ -59,14 +45,8 @@ public class SchedulerService {
         Scheduler scheduler = schedulerRepository.findById(userId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 일정입니다.")
         );
-        return new GetAllSchedulerResponse(
-                scheduler.getId(),
-                scheduler.getName(),
-                scheduler.getTitle(),
-                scheduler.getContent(),
-                scheduler.getCreatedAt(),
-                scheduler.getModifiedAt()
-        );
+        return GetAllSchedulerResponse.from(scheduler);
+
     }
 
     @Transactional
@@ -80,14 +60,7 @@ public class SchedulerService {
                 request.getContent()
         );
 
-        return new UpdateSchedulerResponse(
-                scheduler.getId(),
-                scheduler.getName(),
-                scheduler.getTitle(),
-                scheduler.getContent(),
-                scheduler.getCreatedAt(),
-                scheduler.getModifiedAt()
-        );
+        return UpdateSchedulerResponse.from(scheduler);
     }
 
     @Transactional
