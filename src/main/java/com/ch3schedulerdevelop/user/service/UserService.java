@@ -53,4 +53,11 @@ public class UserService {
         );
         return UpdateUserResponse.from(user);
     }
+
+    public void deleteUser(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 유저입니다.")
+        );
+        userRepository.delete(user);
+    }
 }
