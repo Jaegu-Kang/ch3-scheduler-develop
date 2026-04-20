@@ -1,8 +1,9 @@
-package com.ch3schedulerdevelop.service;
+package com.ch3schedulerdevelop.scheduler.service;
 
-import com.ch3schedulerdevelop.dto.*;
-import com.ch3schedulerdevelop.entity.Scheduler;
-import com.ch3schedulerdevelop.repository.SchedulerRepository;
+import com.ch3schedulerdevelop.scheduler.dto.*;
+import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
+import com.ch3schedulerdevelop.scheduler.repository.SchedulerRepository;
+import com.ch3schedulerdevelop.scheduler.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

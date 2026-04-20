@@ -1,4 +1,4 @@
-package com.ch3schedulerdevelop.entity;
+package com.ch3schedulerdevelop.scheduler.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

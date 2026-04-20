@@ -1,6 +1,6 @@
-package com.ch3schedulerdevelop.dto;
+package com.ch3schedulerdevelop.scheduler.dto;
 
-import com.ch3schedulerdevelop.entity.Scheduler;
+import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 

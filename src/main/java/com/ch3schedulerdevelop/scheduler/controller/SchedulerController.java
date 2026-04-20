@@ -1,7 +1,8 @@
-package com.ch3schedulerdevelop.controller;
+package com.ch3schedulerdevelop.scheduler.controller;
 
-import com.ch3schedulerdevelop.dto.*;
-import com.ch3schedulerdevelop.service.SchedulerService;
+import com.ch3schedulerdevelop.scheduler.dto.*;
+import com.ch3schedulerdevelop.scheduler.dto.*;
+import com.ch3schedulerdevelop.scheduler.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
