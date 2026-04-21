@@ -45,8 +45,8 @@ public class SchedulerService {
     }
 
     @Transactional(readOnly = true)
-    public GetAllSchedulerResponse getOneScheduler(Long userId){
-        Scheduler scheduler = schedulerRepository.findById(userId).orElseThrow(
+    public GetAllSchedulerResponse getOneScheduler(Long schedulerId){
+        Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 일정입니다.")
         );
         return GetAllSchedulerResponse.from(scheduler);
@@ -54,10 +54,13 @@ public class SchedulerService {
     }
 
     @Transactional
-    public UpdateSchedulerResponse updateSchedulerResponse(Long userId, UpdateSchedulerRequest request){
-        Scheduler scheduler = schedulerRepository.findById(userId).orElseThrow(
+    public UpdateSchedulerResponse updateSchedulerResponse(Long schedulerId, Long sessionUserId ,UpdateSchedulerRequest request){
+        Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 일정입니다.")
         );
+        if (!scheduler.getUser().getId().equals(sessionUserId)){
+            throw new IllegalStateException("본인의 일정만 수정할 수 있습니다.");
+        }
         scheduler.update(
                 request.getTitle(),
                 request.getContent()
@@ -67,8 +70,8 @@ public class SchedulerService {
     }
 
     @Transactional
-    public void deleteScheduler(Long userId){
-        Scheduler scheduler = schedulerRepository.findById(userId).orElseThrow(
+    public void deleteScheduler(Long schedulerId){
+        Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
                 () -> new IllegalStateException("없는 일정입니다.")
         );
         schedulerRepository.delete(scheduler);

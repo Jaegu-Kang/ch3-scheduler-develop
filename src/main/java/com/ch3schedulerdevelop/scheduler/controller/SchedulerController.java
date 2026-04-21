@@ -29,24 +29,28 @@ public class SchedulerController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<GetAllSchedulerResponse> getOneScheduler(@PathVariable Long userId){
-        GetAllSchedulerResponse result = schedulerService.getOneScheduler(userId);
+    @GetMapping("/{schedulerId}")
+    public ResponseEntity<GetAllSchedulerResponse> getOneScheduler(@PathVariable Long schedulerId){
+        GetAllSchedulerResponse result = schedulerService.getOneScheduler(schedulerId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @PatchMapping("/{userId}")
+    @PatchMapping("/{schedulerId}")
     public ResponseEntity<UpdateSchedulerResponse> updateScheduler(
-            @PathVariable Long userId,
-            @SessionAttribute(name = "LoginUser", required = false)
+            @PathVariable Long schedulerId,
+            @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser,
             @RequestBody UpdateSchedulerRequest request){
-        UpdateSchedulerResponse result = schedulerService.updateSchedulerResponse(userId,request);
+
+        if (sessionUser == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UpdateSchedulerResponse result = schedulerService.updateSchedulerResponse(schedulerId,sessionUser.getId(),request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteScheduler(@PathVariable Long userId){
-        schedulerService.deleteScheduler(userId);
+    @DeleteMapping("/{schedulerId}")
+    public ResponseEntity<Void> deleteScheduler(@PathVariable Long schedulerId){
+        schedulerService.deleteScheduler(schedulerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
