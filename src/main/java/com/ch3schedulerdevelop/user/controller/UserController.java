@@ -1,7 +1,6 @@
 package com.ch3schedulerdevelop.user.controller;
 
 import com.ch3schedulerdevelop.user.dto.*;
-import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

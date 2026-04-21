@@ -1,6 +1,6 @@
 package com.ch3schedulerdevelop.user.dto;
 
-import com.ch3schedulerdevelop.scheduler.dto.SchedulerListResponse;
+
 import lombok.Getter;
 
 import java.util.List;
