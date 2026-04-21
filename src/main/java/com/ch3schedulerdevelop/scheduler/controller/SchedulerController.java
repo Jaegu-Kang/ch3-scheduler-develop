@@ -3,6 +3,7 @@ package com.ch3schedulerdevelop.scheduler.controller;
 import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.service.SchedulerService;
+import com.ch3schedulerdevelop.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ public class SchedulerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GetAllSchedulerResponse>> getAllScheduler(){
-        List<GetAllSchedulerResponse> result = schedulerService.getAllSchedulerResponse();
+    public ResponseEntity<SchedulerListResponse> getAllScheduler(){
+        SchedulerListResponse result = schedulerService.getAllSchedulerResponse();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -36,8 +37,11 @@ public class SchedulerController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<UpdateSchedulerResponse> updateScheduler(@PathVariable Long userId, @RequestBody UpdateSchedulerRequest request){
-        UpdateSchedulerResponse result = schedulerService.updateSchedulerResponse(userId, request);
+    public ResponseEntity<UpdateSchedulerResponse> updateScheduler(
+            @PathVariable Long userId,
+            @SessionAttribute(name = "LoginUser", required = false)
+            @RequestBody UpdateSchedulerRequest request){
+        UpdateSchedulerResponse result = schedulerService.updateSchedulerResponse(userId,request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

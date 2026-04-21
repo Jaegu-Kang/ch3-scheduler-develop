@@ -35,12 +35,13 @@ public class SchedulerService {
     }
 
     @Transactional(readOnly = true)
-    public List<GetAllSchedulerResponse> getAllSchedulerResponse() {
+    public SchedulerListResponse getAllSchedulerResponse() {
         List<Scheduler> schedulers = schedulerRepository.findAll();
 
-        return schedulers.stream()
+       List<GetAllSchedulerResponse> list = schedulers.stream()
                 .map(GetAllSchedulerResponse::from)
                 .toList();
+        return SchedulerListResponse.of(list);
     }
 
     @Transactional(readOnly = true)

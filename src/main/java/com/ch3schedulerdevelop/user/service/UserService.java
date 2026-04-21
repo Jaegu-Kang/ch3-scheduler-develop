@@ -39,12 +39,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<GetAllUserResponse> getAllUser(){
+    public UserListResponse getAllUser(){
         List<User> users = userRepository.findAll();
 
-        return users.stream()
+        List<GetAllUserResponse> list = users.stream()
                 .map(GetAllUserResponse::from)
                 .toList();
+        return UserListResponse.of(list);
     }
 
     @Transactional(readOnly = true)
