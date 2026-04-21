@@ -18,7 +18,14 @@ public class SchedulerController {
     private final SchedulerService schedulerService;
 
     @PostMapping
-    public ResponseEntity<CreateSchedulerResponse> saveScheduler(@RequestBody CreateSchedulerRequest request){
+    public ResponseEntity<CreateSchedulerResponse> saveScheduler(
+            @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser,
+            @RequestBody CreateSchedulerRequest request){
+
+        if (sessionUser == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         CreateSchedulerResponse result = schedulerService.saveScheduler(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
