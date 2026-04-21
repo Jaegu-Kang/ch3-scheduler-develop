@@ -1,7 +1,8 @@
-package com.ch3schedulerdevelop.controller;
+package com.ch3schedulerdevelop.scheduler.controller;
 
-import com.ch3schedulerdevelop.dto.*;
-import com.ch3schedulerdevelop.service.SchedulerService;
+import com.ch3schedulerdevelop.scheduler.dto.*;
+import com.ch3schedulerdevelop.scheduler.dto.*;
+import com.ch3schedulerdevelop.scheduler.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/schedulers")
+@RequestMapping("api/schedulers")
 public class SchedulerController {
 
     private final SchedulerService schedulerService;
@@ -34,15 +35,15 @@ public class SchedulerController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @PutMapping("/{userId}")
+    @PatchMapping("/{userId}")
     public ResponseEntity<UpdateSchedulerResponse> updateScheduler(@PathVariable Long userId, @RequestBody UpdateSchedulerRequest request){
         UpdateSchedulerResponse result = schedulerService.updateSchedulerResponse(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteScheduler(@PathVariable Long userId, @RequestBody DeleteSchedulerRequest request){
-        schedulerService.deleteScheduler(userId, request);
+    public ResponseEntity<Void> deleteScheduler(@PathVariable Long userId){
+        schedulerService.deleteScheduler(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
