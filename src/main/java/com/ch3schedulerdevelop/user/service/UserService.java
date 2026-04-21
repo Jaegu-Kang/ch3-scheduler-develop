@@ -3,7 +3,6 @@ package com.ch3schedulerdevelop.user.service;
 import com.ch3schedulerdevelop.user.dto.*;
 import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
