@@ -1,7 +1,10 @@
 package com.ch3schedulerdevelop.user.controller;
 
 import com.ch3schedulerdevelop.user.dto.*;
+import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,13 @@ public class UserController {
     public ResponseEntity<CreateUserResponse> saveUser(@RequestBody CreateUserRequest request){
         CreateUserResponse result = userService.saveUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> loginUser(@Valid @RequestBody LoginRequest request, HttpSession session){
+        SessionUser sessionUser = userService.login(request);
+        session.setAttribute("loginUser", sessionUser);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping
