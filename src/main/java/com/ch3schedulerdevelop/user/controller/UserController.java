@@ -2,12 +2,13 @@ package com.ch3schedulerdevelop.user.controller;
 
 import com.ch3schedulerdevelop.user.dto.*;
 import com.ch3schedulerdevelop.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +23,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Void> loginUser(@Valid @RequestBody LoginRequest request, HttpSession session){
+        SessionUser sessionUser = userService.login(request);
+        session.setAttribute("LoginUser", sessionUser);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     @GetMapping
-    public ResponseEntity<List<GetAllUserResponse>> getAllUser(){
-        List<GetAllUserResponse> result = userService.getAllUser();
+    public ResponseEntity<UserListResponse> getAllUser(){
+        UserListResponse result = userService.getAllUser();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
