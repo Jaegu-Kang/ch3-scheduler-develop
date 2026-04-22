@@ -26,10 +26,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> loginUser(@Valid @RequestBody LoginRequest request, HttpSession session){
+    public ResponseEntity<String> loginUser(@Valid @RequestBody LoginRequest request, HttpSession session){
         SessionUser sessionUser = userService.login(request);
         session.setAttribute("LoginUser", sessionUser);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
     }
 
     @GetMapping
