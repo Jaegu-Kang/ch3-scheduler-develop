@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
+
 
 
 @RestController
@@ -26,10 +26,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> loginUser(@Valid @RequestBody LoginRequest request, HttpSession session){
+    public ResponseEntity<String> loginUser(@Valid @RequestBody LoginRequest request, HttpSession session){
         SessionUser sessionUser = userService.login(request);
         session.setAttribute("LoginUser", sessionUser);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
     }
 
     @GetMapping
@@ -48,7 +48,7 @@ public class UserController {
     public ResponseEntity<UpdateUserResponse> updateUser(
             @PathVariable Long userId,
             @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser,
-            @Valid @RequestBody UpdateUserRequest request) throws AccessDeniedException {
+            @Valid @RequestBody UpdateUserRequest request){
         UpdateUserResponse result = userService.updateUser(userId, sessionUser.getId(), request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

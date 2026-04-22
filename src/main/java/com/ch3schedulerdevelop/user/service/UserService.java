@@ -1,5 +1,6 @@
 package com.ch3schedulerdevelop.user.service;
 
+import com.ch3schedulerdevelop.config.PasswordEncoder;
 import com.ch3schedulerdevelop.exception.EmailNotFoundException;
 import com.ch3schedulerdevelop.exception.InvalidPasswordException;
 import com.ch3schedulerdevelop.exception.UnauthorizedAccessException;
@@ -19,13 +20,15 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public CreateUserResponse saveUser(CreateUserRequest request){
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
         User user = new User(
                 request.getName(),
                 request.getEmail(),
-                request.getPassword()
+                encodedPassword
         );
         User savedUser = userRepository.save(user);
         return CreateUserResponse.from(savedUser);
@@ -36,7 +39,7 @@ public class UserService {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new EmailNotFoundException("존재하지 않는 이메일입니다.")
         );
-        if (!user.getPassword().equals(request.getPassword())){
+        if (!passwordEncoder.matches(request.getPassword(),user.getPassword())){
             throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
         return SessionUser.from(user);
