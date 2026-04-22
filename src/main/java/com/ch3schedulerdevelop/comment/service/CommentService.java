@@ -7,7 +7,6 @@ import com.ch3schedulerdevelop.comment.repository.CommentRepository;
 import com.ch3schedulerdevelop.exception.SchedulerNotFoundException;
 import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
 import com.ch3schedulerdevelop.scheduler.repository.SchedulerRepository;
-import com.ch3schedulerdevelop.user.dto.CreateUserRequest;
 import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

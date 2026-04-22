@@ -1,6 +1,6 @@
 package com.ch3schedulerdevelop.comment.dto;
 
-import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
