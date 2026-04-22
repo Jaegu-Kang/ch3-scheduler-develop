@@ -4,6 +4,7 @@ import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.service.SchedulerService;
 import com.ch3schedulerdevelop.user.dto.SessionUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class SchedulerController {
     @PostMapping
     public ResponseEntity<CreateSchedulerResponse> saveScheduler(
             @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser,
-            @RequestBody CreateSchedulerRequest request){
+            @Valid @RequestBody CreateSchedulerRequest request){
 
         if (sessionUser == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -46,7 +47,7 @@ public class SchedulerController {
     public ResponseEntity<UpdateSchedulerResponse> updateScheduler(
             @PathVariable Long schedulerId,
             @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser,
-            @RequestBody UpdateSchedulerRequest request){
+            @Valid @RequestBody UpdateSchedulerRequest request){
 
         if (sessionUser == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
