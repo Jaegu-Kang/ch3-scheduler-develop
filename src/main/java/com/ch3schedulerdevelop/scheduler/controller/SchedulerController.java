@@ -26,7 +26,7 @@ public class SchedulerController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        CreateSchedulerResponse result = schedulerService.saveScheduler(request);
+        CreateSchedulerResponse result = schedulerService.saveScheduler(sessionUser.getId(),request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
@@ -56,8 +56,14 @@ public class SchedulerController {
     }
 
     @DeleteMapping("/{schedulerId}")
-    public ResponseEntity<Void> deleteScheduler(@PathVariable Long schedulerId){
-        schedulerService.deleteScheduler(schedulerId);
+    public ResponseEntity<Void> deleteScheduler(
+            @PathVariable Long schedulerId,
+            @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser)
+    {
+        if (sessionUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        schedulerService.deleteScheduler(schedulerId,sessionUser.getId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -21,8 +21,8 @@ public class SchedulerService {
     private final UserRepository userRepository;
 
     @Transactional
-    public CreateSchedulerResponse saveScheduler(CreateSchedulerRequest request){
-        User user = userRepository.findById(request.getUserId()).orElseThrow(
+    public CreateSchedulerResponse saveScheduler(Long sessionUserId, CreateSchedulerRequest request){
+        User user = userRepository.findById(sessionUserId).orElseThrow(
                 () -> new IllegalArgumentException("없는 유저입니다.")
         );
         Scheduler scheduler = new Scheduler(
@@ -70,10 +70,13 @@ public class SchedulerService {
     }
 
     @Transactional
-    public void deleteScheduler(Long schedulerId){
+    public void deleteScheduler(Long schedulerId, Long sessionUserId){
         Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
                 () -> new IllegalStateException("없는 일정입니다.")
         );
+        if (!scheduler.getUser().getId().equals(sessionUserId)){
+            throw new IllegalStateException("본인의 일정만 수정할 수 있습니다.");
+        }
         schedulerRepository.delete(scheduler);
     }
 }
