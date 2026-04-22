@@ -1,9 +1,10 @@
 package com.ch3schedulerdevelop.scheduler.service;
 
+import com.ch3schedulerdevelop.exception.SchedulerNotFoundException;
+import com.ch3schedulerdevelop.exception.UnauthorizedAccessException;
 import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
 import com.ch3schedulerdevelop.scheduler.repository.SchedulerRepository;
-import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class SchedulerService {
     @Transactional
     public CreateSchedulerResponse saveScheduler(Long sessionUserId, CreateSchedulerRequest request){
         User user = userRepository.findById(sessionUserId).orElseThrow(
-                () -> new IllegalArgumentException("없는 유저입니다.")
+                () -> new IllegalArgumentException("로그인 후 작성 가능합니다.")
         );
         Scheduler scheduler = new Scheduler(
                 request.getTitle(),
@@ -47,19 +48,20 @@ public class SchedulerService {
     @Transactional(readOnly = true)
     public GetAllSchedulerResponse getOneScheduler(Long schedulerId){
         Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 일정입니다.")
+                () -> new SchedulerNotFoundException("존재하지 않는 일정입니다.")
         );
         return GetAllSchedulerResponse.from(scheduler);
 
     }
 
     @Transactional
-    public UpdateSchedulerResponse updateSchedulerResponse(Long schedulerId, Long sessionUserId ,UpdateSchedulerRequest request){
+    public UpdateSchedulerResponse updateSchedulerResponse(Long schedulerId, Long sessionUserId ,UpdateSchedulerRequest request)
+        {
         Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 일정입니다.")
+                () -> new SchedulerNotFoundException("존재하지 않는 일정입니다.")
         );
         if (!scheduler.getUser().getId().equals(sessionUserId)){
-            throw new IllegalStateException("본인의 일정만 수정할 수 있습니다.");
+            throw new UnauthorizedAccessException("권한이 없습니다.");
         }
         scheduler.update(
                 request.getTitle(),
@@ -72,10 +74,10 @@ public class SchedulerService {
     @Transactional
     public void deleteScheduler(Long schedulerId, Long sessionUserId){
         Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
-                () -> new IllegalStateException("없는 일정입니다.")
+                () -> new SchedulerNotFoundException("존재하지 않는 일정입니다.")
         );
         if (!scheduler.getUser().getId().equals(sessionUserId)){
-            throw new IllegalStateException("본인의 일정만 수정할 수 있습니다.");
+            throw new UnauthorizedAccessException("권한이 없습니다.");
         }
         schedulerRepository.delete(scheduler);
     }

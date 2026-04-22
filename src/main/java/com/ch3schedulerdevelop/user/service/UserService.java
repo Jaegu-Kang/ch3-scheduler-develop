@@ -1,5 +1,9 @@
 package com.ch3schedulerdevelop.user.service;
 
+import com.ch3schedulerdevelop.exception.EmailNotFoundException;
+import com.ch3schedulerdevelop.exception.InvalidPasswordException;
+import com.ch3schedulerdevelop.exception.UnauthorizedAccessException;
+import com.ch3schedulerdevelop.exception.UserNotFoundException;
 import com.ch3schedulerdevelop.user.dto.*;
 import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.repository.UserRepository;
@@ -30,10 +34,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public SessionUser login(@Valid LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 이메일입니다.")
+                () -> new EmailNotFoundException("존재하지 않는 이메일입니다.")
         );
         if (!user.getPassword().equals(request.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
         return SessionUser.from(user);
     }
@@ -51,16 +55,20 @@ public class UserService {
     @Transactional(readOnly = true)
     public GetAllUserResponse getOneUser(Long userId){
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
+                () -> new UserNotFoundException("존재하지 않는 유저입니다.")
         );
         return GetAllUserResponse.from(user);
     }
 
     @Transactional
-    public UpdateUserResponse updateUser(Long userId, UpdateUserRequest request){
+    public UpdateUserResponse updateUser(Long userId, Long sessionUserId, UpdateUserRequest request)
+        {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
+                () -> new UserNotFoundException("존재하지 않는 유저입니다.")
         );
+        if (!user.getId().equals(sessionUserId)){
+            throw new UnauthorizedAccessException("권한이 없습니다.");
+        }
         user.update(
                 request.getName(),
                 request.getEmail()
@@ -68,10 +76,13 @@ public class UserService {
         return UpdateUserResponse.from(user);
     }
     @Transactional
-    public void deleteUser(Long userId){
+    public void deleteUser(Long userId, long sessionUserId){
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
+                () -> new UserNotFoundException("존재하지 않는 유저입니다.")
         );
+        if (!user.getId().equals(sessionUserId)){
+            throw new UnauthorizedAccessException("권한이 없습니다.");
+        }
         userRepository.delete(user);
     }
 }

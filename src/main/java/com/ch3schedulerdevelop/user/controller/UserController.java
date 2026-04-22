@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<CreateUserResponse> saveUser(@RequestBody CreateUserRequest request){
+    public ResponseEntity<CreateUserResponse> saveUser(@Valid @RequestBody CreateUserRequest request){
         CreateUserResponse result = userService.saveUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -43,14 +45,19 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<UpdateUserResponse> updateUser(@PathVariable Long userId, @RequestBody UpdateUserRequest request){
-        UpdateUserResponse result = userService.updateUser(userId, request);
+    public ResponseEntity<UpdateUserResponse> updateUser(
+            @PathVariable Long userId,
+            @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser,
+            @Valid @RequestBody UpdateUserRequest request) throws AccessDeniedException {
+        UpdateUserResponse result = userService.updateUser(userId, sessionUser.getId(), request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
-        userService.deleteUser(userId);
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long userId,
+            @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser){
+        userService.deleteUser(userId, sessionUser.getId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
