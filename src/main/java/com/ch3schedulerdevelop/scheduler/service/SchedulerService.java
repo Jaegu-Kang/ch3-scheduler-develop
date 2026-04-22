@@ -1,5 +1,6 @@
 package com.ch3schedulerdevelop.scheduler.service;
 
+import com.ch3schedulerdevelop.comment.repository.CommentRepository;
 import com.ch3schedulerdevelop.exception.SchedulerNotFoundException;
 import com.ch3schedulerdevelop.exception.UnauthorizedAccessException;
 import com.ch3schedulerdevelop.scheduler.dto.*;
@@ -8,6 +9,8 @@ import com.ch3schedulerdevelop.scheduler.repository.SchedulerRepository;
 import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,7 @@ public class SchedulerService {
 
     private final SchedulerRepository schedulerRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public CreateSchedulerResponse saveScheduler(Long sessionUserId, CreateSchedulerRequest request){
@@ -52,6 +56,15 @@ public class SchedulerService {
         );
         return GetAllSchedulerResponse.from(scheduler);
 
+    }
+
+    @Transactional(readOnly = true)
+    public Page<SchedulePageResponse> getSchedulePages(Pageable pageable){
+        Page<Scheduler> schedulerPage = schedulerRepository.findAll(pageable);
+        return schedulerPage.map(scheduler -> {
+            Long commentCount = commentRepository.countBySchedulerId(scheduler.getId());
+            return new SchedulePageResponse(scheduler, commentCount);
+        });
     }
 
     @Transactional
