@@ -1,14 +1,12 @@
 package com.ch3schedulerdevelop.comment.dto;
 
 import com.ch3schedulerdevelop.comment.entity.Comment;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@JsonPropertyOrder({"id","userId","title","content", "createdAt", "modifiedAt"})
 @Getter
-public class CreateCommentResponse {
+public class GetAllCommentResponse {
 
     private final Long id;
     private final Long userId;
@@ -17,7 +15,7 @@ public class CreateCommentResponse {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
-    private CreateCommentResponse(Long id, Long userId, Long schedulerId, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public GetAllCommentResponse(Long id, Long userId, Long schedulerId, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.userId = userId;
         this.schedulerId = schedulerId;
@@ -25,9 +23,8 @@ public class CreateCommentResponse {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
-
-    public static CreateCommentResponse from(Comment comment){
-        return new CreateCommentResponse(
+    public static GetAllCommentResponse from(Comment comment){
+        return new GetAllCommentResponse(
                 comment.getId(),
                 comment.getUser().getId(),
                 comment.getScheduler().getId(),

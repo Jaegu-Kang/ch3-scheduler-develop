@@ -1,5 +1,6 @@
 package com.ch3schedulerdevelop.comment.controller;
 
+import com.ch3schedulerdevelop.comment.dto.CommentListResponse;
 import com.ch3schedulerdevelop.comment.dto.CreateCommentRequest;
 import com.ch3schedulerdevelop.comment.dto.CreateCommentResponse;
 import com.ch3schedulerdevelop.comment.service.CommentService;
@@ -26,6 +27,12 @@ public class CommentController {
         }
         CreateCommentResponse result = commentService.saveComment(sessionUser.getId(),request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @GetMapping
+    public ResponseEntity<CommentListResponse> GetAllComment(){
+        CommentListResponse result = commentService.getAllCommentResponse();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }
