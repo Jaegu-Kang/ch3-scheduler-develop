@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public SessionUser login(@Valid LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 이메일입니다.")
+                () -> new NoSuchElementException("존재하지 않는 이메일입니다.")
         );
         if (!user.getPassword().equals(request.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
@@ -51,16 +53,20 @@ public class UserService {
     @Transactional(readOnly = true)
     public GetAllUserResponse getOneUser(Long userId){
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
+                () -> new NoSuchElementException("존재하지 않는 유저입니다.")
         );
         return GetAllUserResponse.from(user);
     }
 
     @Transactional
-    public UpdateUserResponse updateUser(Long userId, UpdateUserRequest request){
+    public UpdateUserResponse updateUser(Long userId, Long sessionUserId, UpdateUserRequest request)
+            throws AccessDeniedException {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
+                () -> new NoSuchElementException("존재하지 않는 유저입니다.")
         );
+        if (!user.getId().equals(sessionUserId)){
+            throw new AccessDeniedException("권한이 없습니다.");
+        }
         user.update(
                 request.getName(),
                 request.getEmail()
@@ -68,10 +74,13 @@ public class UserService {
         return UpdateUserResponse.from(user);
     }
     @Transactional
-    public void deleteUser(Long userId){
+    public void deleteUser(Long userId, long sessionUserId){
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 유저입니다.")
+                () -> new NoSuchElementException("존재하지 않는 유저입니다.")
         );
+        if (!user.getId().equals(sessionUserId)){
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
         userRepository.delete(user);
     }
 }
