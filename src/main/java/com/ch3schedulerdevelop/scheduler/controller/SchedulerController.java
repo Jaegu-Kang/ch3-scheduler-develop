@@ -6,11 +6,15 @@ import com.ch3schedulerdevelop.scheduler.service.SchedulerService;
 import com.ch3schedulerdevelop.user.dto.SessionUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
+
 
 
 @RestController
@@ -45,12 +49,19 @@ public class SchedulerController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @GetMapping("/page")
+    public ResponseEntity<Page<SchedulePageResponse>> getSchedulerPage(
+            @PageableDefault(size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<SchedulePageResponse> result = schedulerService.getSchedulePages(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     @PatchMapping("/{schedulerId}")
     public ResponseEntity<UpdateSchedulerResponse> updateScheduler(
             @PathVariable Long schedulerId,
             @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser,
             @Valid @RequestBody UpdateSchedulerRequest request)
-            throws AccessDeniedException {
+            {
         if (sessionUser == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -62,7 +73,7 @@ public class SchedulerController {
     public ResponseEntity<Void> deleteScheduler(
             @PathVariable Long schedulerId,
             @SessionAttribute(name = "LoginUser", required = false) SessionUser sessionUser)
-            throws AccessDeniedException {
+            {
         if (sessionUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
