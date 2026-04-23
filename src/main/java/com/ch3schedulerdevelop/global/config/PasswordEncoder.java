@@ -1,4 +1,4 @@
-package com.ch3schedulerdevelop.config;
+package com.ch3schedulerdevelop.global.config;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;

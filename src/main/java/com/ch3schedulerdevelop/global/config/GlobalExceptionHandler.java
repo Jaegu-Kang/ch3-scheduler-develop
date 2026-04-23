@@ -1,6 +1,6 @@
-package com.ch3schedulerdevelop.config;
+package com.ch3schedulerdevelop.global.config;
 
-import com.ch3schedulerdevelop.exception.ServerException;
+import com.ch3schedulerdevelop.global.exception.ServerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -6,7 +6,7 @@ import com.ch3schedulerdevelop.comment.dto.CreateCommentResponse;
 import com.ch3schedulerdevelop.comment.dto.GetAllCommentResponse;
 import com.ch3schedulerdevelop.comment.entity.Comment;
 import com.ch3schedulerdevelop.comment.repository.CommentRepository;
-import com.ch3schedulerdevelop.exception.SchedulerNotFoundException;
+import com.ch3schedulerdevelop.global.exception.SchedulerNotFoundException;
 import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
 import com.ch3schedulerdevelop.scheduler.repository.SchedulerRepository;
 import com.ch3schedulerdevelop.user.entity.User;

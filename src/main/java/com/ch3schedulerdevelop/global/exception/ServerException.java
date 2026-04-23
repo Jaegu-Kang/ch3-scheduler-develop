@@ -1,4 +1,4 @@
-package com.ch3schedulerdevelop.exception;
+package com.ch3schedulerdevelop.global.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

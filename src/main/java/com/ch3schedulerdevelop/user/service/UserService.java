@@ -1,10 +1,10 @@
 package com.ch3schedulerdevelop.user.service;
 
-import com.ch3schedulerdevelop.config.PasswordEncoder;
-import com.ch3schedulerdevelop.exception.EmailNotFoundException;
-import com.ch3schedulerdevelop.exception.InvalidPasswordException;
-import com.ch3schedulerdevelop.exception.UnauthorizedAccessException;
-import com.ch3schedulerdevelop.exception.UserNotFoundException;
+import com.ch3schedulerdevelop.global.config.PasswordEncoder;
+import com.ch3schedulerdevelop.global.exception.EmailNotFoundException;
+import com.ch3schedulerdevelop.global.exception.InvalidPasswordException;
+import com.ch3schedulerdevelop.global.exception.UnauthorizedAccessException;
+import com.ch3schedulerdevelop.global.exception.UserNotFoundException;
 import com.ch3schedulerdevelop.user.dto.*;
 import com.ch3schedulerdevelop.user.entity.User;
 import com.ch3schedulerdevelop.user.repository.UserRepository;

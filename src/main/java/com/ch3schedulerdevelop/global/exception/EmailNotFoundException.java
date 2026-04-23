@@ -1,4 +1,4 @@
-package com.ch3schedulerdevelop.exception;
+package com.ch3schedulerdevelop.global.exception;
 
 import org.springframework.http.HttpStatus;
 

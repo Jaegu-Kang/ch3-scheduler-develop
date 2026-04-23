@@ -1,8 +1,8 @@
 package com.ch3schedulerdevelop.scheduler.service;
 
 import com.ch3schedulerdevelop.comment.repository.CommentRepository;
-import com.ch3schedulerdevelop.exception.SchedulerNotFoundException;
-import com.ch3schedulerdevelop.exception.UnauthorizedAccessException;
+import com.ch3schedulerdevelop.global.exception.SchedulerNotFoundException;
+import com.ch3schedulerdevelop.global.exception.UnauthorizedAccessException;
 import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
 import com.ch3schedulerdevelop.scheduler.repository.SchedulerRepository;
@@ -63,7 +63,7 @@ public class SchedulerService {
         Page<Scheduler> schedulerPage = schedulerRepository.findAll(pageable);
         return schedulerPage.map(scheduler -> {
             Long commentCount = commentRepository.countBySchedulerId(scheduler.getId());
-            return new SchedulePageResponse(scheduler, commentCount);
+            return SchedulePageResponse.of(scheduler, commentCount);
         });
     }
 
