@@ -1,5 +1,6 @@
 package com.ch3schedulerdevelop.scheduler.controller;
 
+import com.ch3schedulerdevelop.global.dto.PageResponse;
 import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.dto.*;
 import com.ch3schedulerdevelop.scheduler.service.SchedulerService;
@@ -50,10 +51,10 @@ public class SchedulerController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<SchedulePageResponse>> getSchedulerPage(
+    public ResponseEntity<PageResponse<SchedulePageResponse>> getSchedulerPage(
             @PageableDefault(size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable){
         Page<SchedulePageResponse> result = schedulerService.getSchedulePages(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(PageResponse.of(result));
     }
 
     @PatchMapping("/{schedulerId}")

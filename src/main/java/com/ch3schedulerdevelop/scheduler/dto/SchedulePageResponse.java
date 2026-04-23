@@ -1,11 +1,13 @@
 package com.ch3schedulerdevelop.scheduler.dto;
 
 import com.ch3schedulerdevelop.scheduler.entity.Scheduler;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@JsonPropertyOrder({"title","content","commentCount","createdAt", "modifiedAt", "userName"})
 public class SchedulePageResponse {
 
     private final String title;
